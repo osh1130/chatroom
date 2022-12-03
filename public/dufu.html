@@ -6,8 +6,60 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="short icon" href="dufu.ico" />
     <title>dufu</title>
+    <link rel="stylesheet" href="./base.css">
 </head>
 <body>
-    
+    <main>
+        <div class="msgbox" id="msgbox">
+            <div class="msg left">
+                <img src="./libai.jpg" width="40" height="40" alt="7">
+                <section>hello</section>
+            </div>
+            <div class="msg right">
+                <section>hello</section>
+                <img src="./dufu.jpg" width="40" height="40" alt="7">
+            </div>
+        </div>
+        <textarea id="txt" placeholder="text..."></textarea>
+        <div class="tips" id="tips">Content can not be blank</div>
+    </main>
 </body>
+<script>
+    function getleftmsg(value){
+        var msgHtml=`<div class="msg left">
+                <img src="./libai.jpg" width="40" height="40" alt="7">
+                <section>${value}</section>
+            </div>`;
+        return msgHtml;
+    }
+
+    function getrightmsg(value){
+        var msgHtml=`<div class="msg right">
+                <section>${value}</section>
+                <img src="./dufu.jpg" width="40" height="40" alt="7">
+            </div>`;
+        return msgHtml;
+    }
+    txt.onkeyup=function(e){
+        if(e.keyCode===13){
+            if(txt.value.trim()!==""){
+                let value=txt.value;
+                msgbox.innerHTML += getrightmsg(value);
+
+                msgbox.scrollTo({
+                top: msgbox.scrollHeight,
+                behavior: "smooth"
+            })
+
+        }else{
+            tips.style.display="block";
+            setTimeout(()=>{
+                tips.style.display="none";
+            },1500)
+        }
+        txt.value="";
+        }
+        
+    }
+</script>
 </html>

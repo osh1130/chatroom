@@ -13,42 +13,75 @@ main{
 }
 
 .msgbox{
-    height: 78%;
+    height: 80%;
     width: 100%;
+    padding: 10px;
     box-sizing: border-box;
     border: 2px solid pink;
     background: #efefef;
+    overflow: hidden;
 }
 
 textarea{
-    height: 20%;
+    height: 16%;
     width: 100%;
     box-sizing: border-box;
     border: 2px solid pink;
     resize: none;
     padding: 10px;
+    outline: none;
 }
 
 .msg{
     display: flex;
     justify-content: space-between;
+    margin-bottom: 10px;
 }
 
 .msg section{
     flex:1;
-    background: #ccf;
+    background: #fff;
     border-radius: 6px;
+    position: relative;
+    word-break: break-all;
 }
 
 .left section{
     margin-left: 10px;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.right section{
+    margin-right: 10px;
+    padding: 10px;
+    box-sizing: border-box;
 }
 
 .msg section::after{
     content: "";
     width: 0;height: 0;
     position: absolute;
-    left: -11px;right: 11px;
+    left: -11px;top: 11px;
     border: 6px solid transparent;
-    border-right-color:red ;
+    border-right-color:#fff ;
+}
+
+.right section::after{
+    border: 6px solid transparent;
+    border-left-color:#fff ;
+    left: auto; 
+    right: -11px;
+    
+}
+
+.tips{
+    position: fixed;
+    padding: 6px 10px;
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+    left:50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    display: none;
 }
