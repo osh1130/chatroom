@@ -25,13 +25,36 @@
     </main>
 </body>
 <script>
-    const dufu1 = new WebSocket('ws://localhost:3030/ws/dufu1')
+    // 向服务器发送数据
+    const dufu = new WebSocket('ws://localhost:3030/ws/dufu')
+    dufu.onopen = () => {
+        console.log(`连接成功，连接状态为： 发送`)
+    }
+    dufu.onmessage = msg => {
+    // 得到监听回来的数据，渲染到页面中
+        console.log(`返回的数据为：${msg.data}`)
+        msgbox.innerHTML += getrightmsg(msg.data);
+        msgbox.scrollTo({
+        top: msgbox.scrollHeight,
+        behavior: "smooth"
+        })
+    }
+    dufu.onclose = function (e) {
+        console.log("服务器关闭");
+    }
+    dufu.onerror = function (e) {
+        console.log("连接出错");
+    }
 
-    dufu1.onopen = () => {}
+    // 服务器接受并返回数据
+    const dufu1 = new WebSocket('ws://localhost:3030/ws/dufu1')
+    dufu1.onopen = () => {
+        console.log(`连接成功，连接状态为： 接受`)
+    }
 
     dufu1.onmessage = res => {
     // 得到监听回来的数据，渲染到页面中
-        //console.log(res.data)
+        console.log(res.data)
         msgbox.innerHTML += getleftmsg(res.data);
         msgbox.scrollTo({
         top: msgbox.scrollHeight,
@@ -65,13 +88,7 @@
     txt.onkeyup=function(e){
         if(e.keyCode===13){
             if(txt.value.trim()!==""){
-                let value=txt.value;
-                msgbox.innerHTML += getrightmsg(value);
-
-                msgbox.scrollTo({
-                top: msgbox.scrollHeight,
-                behavior: "smooth"
-            })
+                dufu.send(txt.value);
 
         }else{
             tips.style.display="block";

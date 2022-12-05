@@ -5,6 +5,8 @@ expressWs(router)
 
 // 声明一个数组，用来存放李四发出来的信息
 let libaiArr = [];
+let dufuArr = [];
+
 
 // libai访问的地址
 router.ws("/libai", ws=>{
@@ -16,10 +18,30 @@ router.ws("/libai", ws=>{
 })
 })
 
+router.ws("/libai1", ws=>{
+    let timer = null;
+    // 监听到连接断开时，停止定时器，避免性能损耗
+    ws.on('close', ()=>{
+        if(timer){ clearInterval(timer) }
+    })
+    timer = setInterval(()=>{
+      // 每一秒检查一次lisiArr
+      if(dufuArr.length>0){
+        let m = dufuArr[0];	// 获取第一项
+        dufuArr.splice(0, 1);	// 删除第一项
+        ws.send(m);		// send方法会阻断后续代码，因此必须写在最后
+      }
+    }, 1000)
+  })
 
 // dufu访问的地址
 router.ws("/dufu", ws=>{
-  ws.send("dufu连接上了")
+  //ws.send("dufu连接上了")
+  ws.on('message', msg=>{
+    // 接收libai传来的信息，存储后，再返回给libai
+    dufuArr.push(msg);
+    ws.send(msg);
+})
 })
 
 //dufu接受数据
