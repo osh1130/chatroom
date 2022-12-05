@@ -25,6 +25,28 @@
     </main>
 </body>
 <script>
+    const dufu1 = new WebSocket('ws://localhost:3030/ws/dufu1')
+
+    dufu1.onopen = () => {}
+
+    dufu1.onmessage = res => {
+    // 得到监听回来的数据，渲染到页面中
+        //console.log(res.data)
+        msgbox.innerHTML += getleftmsg(res.data);
+        msgbox.scrollTo({
+        top: msgbox.scrollHeight,
+        behavior: "smooth"
+        })
+    }
+
+    dufu1.onclose = function (e) {
+        console.log("服务器关闭");
+    }
+
+    dufu1.onerror = function (e) {
+        console.log("连接出错");
+    }
+
     function getleftmsg(value){
         var msgHtml=`<div class="msg left">
                 <img src="./libai.jpg" width="40" height="40" alt="7">

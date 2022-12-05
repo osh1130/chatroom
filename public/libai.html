@@ -25,7 +25,36 @@
         <div class="tips" id="tips">Content can not be blank</div>
     </main>
 </body>
+
 <script>
+    // 实例化，建立连接
+    const libai = new WebSocket("ws://localhost:3030/ws/libai")
+
+    //连接成功回调
+    libai.onopen = () => {
+        console.log(`连接成功，连接状态为： 1`)
+    }
+
+    // 接收服务器返回的数据
+    libai.onmessage = msg => {
+        //console.log(`返回的数据为：${msg.data}`)
+        msgbox.innerHTML += getrightmsg(msg.data);
+        msgbox.scrollTo({
+        top: msgbox.scrollHeight,
+        behavior: "smooth"
+        })
+    }
+
+    // 连接断开时触发
+    libai.onclose = () => {
+        console.log(`连接已经断开`)
+    }
+
+    // 连接发生错误时触发
+    libai.onerror = () => {
+        console.log(`连接发生错误`)
+    }
+
     function getleftmsg(value){
         var msgHtml=`<div class="msg left">
                 <img src="./dufu.jpg" width="40" height="40" alt="7">
@@ -41,17 +70,17 @@
             </div>`;
         return msgHtml;
     }
+    
     txt.onkeyup=function(e){
         if(e.keyCode===13){
             if(txt.value.trim()!==""){
-                let value=txt.value;
-                msgbox.innerHTML += getrightmsg(value);
-
-                msgbox.scrollTo({
-                top: msgbox.scrollHeight,
-                behavior: "smooth"
-            })
-
+                //let value=txt.value;
+                libai.send(txt.value);
+                //msgbox.innerHTML += getrightmsg(value);
+                //msgbox.scrollTo({
+                //top: msgbox.scrollHeight,
+                //behavior: "smooth"
+            //})
         }else{
             tips.style.display="block";
             setTimeout(()=>{
@@ -64,3 +93,4 @@
     }
 </script>
 </html>
+
